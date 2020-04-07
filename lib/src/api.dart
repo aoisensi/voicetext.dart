@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
-class VoicetextApi {
-  final String _basic;
-  VoicetextApi(String apiKey)
-      : _basic = 'Basic ' + base64.encode(utf8.encode('$apiKey:'));
+class VoiceTextApi {
+  final Map<String, String> _header;
+  VoiceTextApi(String apiKey)
+      : _header = {
+          'Authorization': 'Basic ' + base64.encode(utf8.encode('$apiKey:'))
+        };
 
   /// https://cloud.voicetext.jp/webapi/docs/api
   Future<Uint8List> postTts(String text, String speaker,
@@ -26,10 +28,8 @@ class VoicetextApi {
     if (speed != null) body['speed'] = speed.toString();
     if (volume != null) body['volume'] = volume.toString();
 
-    var header = {'Authorization': _basic};
-
     var resp = await http.post('https://api.voicetext.jp/v1/tts',
-        headers: header, body: body);
+        headers: _header, body: body);
 
     if (resp.statusCode != 200) {
       var error = json.decode(resp.body)['error']['message'];

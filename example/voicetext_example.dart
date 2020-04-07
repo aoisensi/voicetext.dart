@@ -7,17 +7,15 @@ void main() async {
   if (key == null) {
     throw Exception('VOICETEXT_API_KEY is empty!!');
   }
-  var api = VoicetextApi(key);
+  var api = VoiceTextApi(key);
 
-  print('Enter some text:');
-  while (true) {
-    var text = stdin.readLineSync();
-    try {
-      var audio = await api.postTts(text, 'hikari');
-      File('$text.wav').writeAsBytesSync(audio);
-      print('Saved file "$text.wav"');
-    } catch (e) {
-      print(e);
-    }
+  var text = 'Dart言語を使ったVoiceTextのAPIライブラリのサンプルコードです。';
+
+  try {
+    var audio = await api.postTts(text, 'hikari');
+    File('example.wav').writeAsBytesSync(audio);
+    print('Saved file "exsample.wav"');
+  } catch (e) {
+    print(e);
   }
 }
